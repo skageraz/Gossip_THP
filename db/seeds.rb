@@ -8,7 +8,8 @@
 
 
 require 'faker'
-def ignite
+
+def ignite #methode qui permet de creer 10 villes et 10 users
   10.times do
     City.create(
       name: Faker::Address.city
@@ -25,7 +26,7 @@ def ignite
   end
 end
 
-def create_gossips
+def create_gossips #on crée 20 gossips
   20.times do
     Gossip.create(
       title: Faker::Book.title,
@@ -36,36 +37,68 @@ def create_gossips
   end
 end
 
-def create_tags_and_through_table_gossip
+def create_tags_and_through_table_gossip #création de 10 tags et des id de la table intermediaire pour la relation Tag/Gossip
   10.times do
     Tag.create(
       title: Faker::Book.title
     )
   end
 
-    Gossip.all.each do |gossip|
+  Gossip.all.each do |gossip| #on attribue à chaque gossip un tag aleatoire
   gossip.tags.push(Tag.all.sample)
   gossip.save
-end
+   end
 
-# give each assembly a random part
-  Tag.all.each do |tag|
+
+  Tag.all.each do |tag|  #on attribue à chaque tag un gossip aléatoire
   tag.gossips.push(Gossip.all.sample)
   tag.save
-end
+  end
 end
 
-def create_PrivateMessage
+def create_PrivateMessage #creation d'un message entre deux users
    PrivateMessage.create(
      content: Faker::DumbAndDumber.quote,
      date: Faker::Date.backward(14),
      sender_id: rand(User.first.id..User.last.id),
      recipient_id: rand(User.first.id..User.last.id)
    )
+
  end
 
-   comment = Comment.create(
-     content: Faker::Lorem.sentences(1),
-     user_id: rand(User.first.id..User.last.id),
-     gossip_id: rand(Gossip.first.id..Gossip.last.id)
-   )
+ def create_comments_and_undercomments #methode pour créer des comments et sous comments
+    10.times do
+      comment = Gossip.all.sample.comments.create(
+        content: Faker::Lorem.sentences(1),
+        gossip_id: rand(Gossip.first.id..Gossip.last.id),
+        user_id: rand(User.first.id..User.last.id)
+      )
+        end
+      # Creation de sous-commentaires générés aléatoirement
+      10.times do
+        comment2 = Comment.all.sample.comments.create(
+          content: Faker::Lorem.sentences(1),
+          gossip_id: rand(Gossip.first.id..Gossip.last.id),
+          user_id: rand(User.first.id..User.last.id)
+        )
+         end
+    end
+
+    def create_likes #genere des likes de manière aléatoire entre les gossips et les comments
+    20.times do
+      x = 0
+      x = rand (1..2)
+      if x == 1
+        like = Like.create(user_id: rand(User.first.id..User.last.id), gossip_id: rand(Gossip.first.id..Gossip.last.id))
+      elsif x == 2
+        like = Like.create(user_id: rand(User.first.id..User.last.id), comment_id: rand(Comment.first.id..Comment.last.id))
+      end
+    end
+  end
+
+ignite
+create_gossips
+create_tags_and_through_table_gossip
+create_PrivateMessage
+create_comments_and_undercomments
+create_likes

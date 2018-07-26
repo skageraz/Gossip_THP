@@ -1,4 +1,5 @@
 class User < ApplicationRecord
-  belongs_to :city
-  has_many :comments, as: :commentable
+belongs_to :city
+has_many :likes
+
 end

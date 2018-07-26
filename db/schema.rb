@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_204904) do
+ActiveRecord::Schema.define(version: 2018_07_26_221500) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
@@ -44,6 +44,19 @@ ActiveRecord::Schema.define(version: 2018_07_26_204904) do
   create_table "gossips_tags", id: false, force: :cascade do |t|
     t.integer "gossip_id", null: false
     t.integer "tag_id", null: false
+    t.index ["gossip_id", "tag_id"], name: "index_gossips_tags_on_gossip_id_and_tag_id"
+    t.index ["tag_id", "gossip_id"], name: "index_gossips_tags_on_tag_id_and_gossip_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "gossip_id"
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_likes_on_comment_id"
+    t.index ["gossip_id"], name: "index_likes_on_gossip_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "private_messages", force: :cascade do |t|

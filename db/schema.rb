@@ -10,13 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_201704) do
+ActiveRecord::Schema.define(version: 2018_07_26_204904) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.integer "postal_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "gossip_id"
+    t.integer "user_id"
+    t.string "commentable_type"
+    t.integer "commentable_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gossip_id"], name: "index_comments_on_gossip_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "gossips", force: :cascade do |t|

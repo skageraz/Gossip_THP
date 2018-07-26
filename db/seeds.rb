@@ -55,9 +55,17 @@ end
 end
 end
 
+def create_PrivateMessage
    PrivateMessage.create(
      content: Faker::DumbAndDumber.quote,
      date: Faker::Date.backward(14),
      sender_id: rand(User.first.id..User.last.id),
      recipient_id: rand(User.first.id..User.last.id)
+   )
+ end
+
+   comment = Comment.create(
+     content: Faker::Lorem.sentences(1),
+     user_id: rand(User.first.id..User.last.id),
+     gossip_id: rand(Gossip.first.id..Gossip.last.id)
    )

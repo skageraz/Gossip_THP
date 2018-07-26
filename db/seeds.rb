@@ -36,11 +36,12 @@ def create_gossips
   end
 end
 
+def create_tags_and_through_table_gossip
   10.times do
     Tag.create(
       title: Faker::Book.title
     )
-  end 
+  end
 
     Gossip.all.each do |gossip|
   gossip.tags.push(Tag.all.sample)
@@ -48,7 +49,15 @@ end
 end
 
 # give each assembly a random part
-Tag.all.each do |tag|
+  Tag.all.each do |tag|
   tag.gossips.push(Gossip.all.sample)
   tag.save
 end
+end
+
+   PrivateMessage.create(
+     content: Faker::DumbAndDumber.quote,
+     date: Faker::Date.backward(14),
+     sender_id: rand(User.first.id..User.last.id),
+     recipient_id: rand(User.first.id..User.last.id)
+   )
